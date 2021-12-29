@@ -33,7 +33,48 @@ npx create-react-app [project name]
 npm install nodemon body-parser express
 ```
 
+## Create DB 
+
+* create database
+    ```
+    create database [database name] DEFAULT CHARSET=UTF8 COLLATE=utf8_general_ci;
+    ```
+
+* create table in database
+    ```
+    use [database name];
+
+    CREATE TABLE customers ( 
+        id INT PRIMARY KEY AUTO_INCREMENT, 
+        image VARCHAR(1024), 
+        name VARCHAR(64), 
+        birthday VARCHAR(64), 
+        gender VARCHAR(64), 
+        job VARCHAR(64) );
+    ```
+
+* insert and show data
+    ```
+    INSERT INTO customers VALUES (1, 'https://placeimg.com/64/64/1', 'gilsoon nam', 891023, 'male', 'student');
+        
+    INSERT INTO customers VALUES (2, 'https://placeimg.com/64/64/2', 'gildong hong', 910223, 'male', 'student');
+
+    INSERT INTO customers VALUES (3, 'https://placeimg.com/64/64/3', 'donggeon jang', 780223, 'male', 'actor');
+    ```
+
+    ```
+    SELECT * FROM [database name]
+    ```
+
+* `nodejs`에서 `mysql`에 접속하기 위한 설치
+    ```
+    npm install mysql
+    ```
 
 
 #### jsonlint
 `json` 형태로 작성한 데이터가 올바른 `json`인지 확인
+
+
+
+

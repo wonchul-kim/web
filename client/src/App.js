@@ -72,8 +72,6 @@ props or state에 의해 값이 변경되면 => shouldComponentUpdate()
 
 */
 
-
-
 class App extends React.Component {
 
   state = {
