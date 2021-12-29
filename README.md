@@ -33,7 +33,20 @@ npx create-react-app [project name]
 npm install nodemon body-parser express
 ```
 
-## Create DB 
+## Create MYSQM DB
+* install 
+    ```
+    sudo apt-get install mysql-server
+    
+    sudo systemctl enable mysql
+
+    sudo systemctl start mysql    
+    ```
+
+* connect in
+    ``` 
+    sudo mysql -u root -p
+    ```
 
 * create database
     ```
@@ -64,6 +77,17 @@ npm install nodemon body-parser express
 
     ```
     SELECT * FROM [database name]
+    ```
+
+* `root`계정으로 하지 말고, 새로운 계정을 만들어서 진행하자. (아래의 내용은 `root`로 접속하여 진행)
+    ```
+    create user '계정명'@'%' identified by '비밀번호';
+
+    ALTER USER '계정명'@'%' IDENTIFIED WITH mysql_native_password BY '비밀번호';
+
+    grant all on 데이터베이스이름.* to '계정명'@'%';
+
+    flush priviledges;
     ```
 
 * `nodejs`에서 `mysql`에 접속하기 위한 설치
