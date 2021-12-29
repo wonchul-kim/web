@@ -1,5 +1,40 @@
 # Client
 
+### React LifeCycle
+
+React는 원하는 데이터를 서버로부터 가져와 화면에 출력하도록 도와주는 front-end library이다. 그렇기 때문에 서버와 통신을 할 수 있도록 해주는 API를 언제, 어떻게 호출해야 원하는 데이터를 가져올 수 있다. 
+
+#### Component Mounting
+React component object가 DOM에 실제로 삽입되기까지의 Mounting 과정은 다음과 같다.
+
+1. constructor()
+2. componentWillMount()
+3. render()
+4. componentDidMount()
+
+> 기본적으로 component가 모두 구성된 직후인 `compoenentDidMount()` 함수에서 API 호출을 수행하는 것이 효과적이다.  
+
+#### 데이터의 호출 및 변경 - props & state
+
+1. shouldComponentUpdate()
+2. componentWillUpdate()
+3. render()
+4. componentDidUpdate()
+
+> 기본적으로 component의 데이터와 화면에 출력된 내용이 다를 때, `shouldComponentUpdate()` 함수가 동작하며 `true`를 default로 반환한다. 
+
+> 화면에 출력되는 화면 구성을 변경하고자 할 때는 `componentDidUpdate()`를 많이 사용한다. 
+
+#### Component 해제
+
+component가 mounting 해제될 때 수행되는 함수는 `componentWillUnmount()` 함수이며, 해당 component의 동작을 위해서 사용되었던 메소드들의 리소스를 제거할 수 있다. 
+
+#### API 호출 연습
+
+* https://jsonplaceholder.typicode.com/
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 ## React
 [Getting started](https://create-react-app.dev/docs/getting-started/)
 
@@ -24,6 +59,9 @@ npx create-react-app [project name]
 
 * state: 변경되는 데이터를 다룰 때 사용
 * props: 변경되지 않는 데이터를 다룰 때 사용
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 # Server
 
