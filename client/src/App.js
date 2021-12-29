@@ -7,17 +7,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import {withStyles} from '@mui/styles';
+import { withStyles, makeStyles } from '@mui/styles';
+import { CircularProgress } from '@mui/material';
+
 
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: 5, //theme.spacing.unit*3,
+    marginTop: 3, //theme.spacing.unit*3,
     overflowX: "auto"
   },
   table: {
     minWidth: 1080
-  }  
+  },
+  progress: {
+    margin: 3, //theme.spacing.unit*2,
+  }
 });
 
 // const customers = [{
@@ -46,13 +51,38 @@ const styles = theme => ({
 // }  
 // ]
 
+/*
+React LifeCycle 
+
+1) constructor()
+
+2) componentWillMount()
+
+3) render()
+
+4) componentDidMount()
+
+*/
+
+/*
+
+props or state에 의해 값이 변경되면 => shouldComponentUpdate()
+
+그 다음 다시 3) render()가 실행됨
+
+*/
+
+
+
 class App extends React.Component {
 
   state = {
-    customers: ""
+    customers: "",
+    completed: 0
   }
 
-  componentDidMount(){
+  componentDidMount(){ // Api에서 통신을 할 경우에는 componentDidMount()에서 한다. 
+    this.timer = setInterval(this.progress, 20); // 0.02초마다 progress 함수를 실행한다.
     this.callApi()
       .then(res => this.setState({customers: res})) // callApi로부터 받아온 데이터(body)를 res라는 변수로 받아오고, 이를 res에 저장하여     
                                                     // setState를 활용하여 customer 변수에 저장
@@ -66,6 +96,10 @@ class App extends React.Component {
     return body
   }
 
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1});
+  }
   render(){
     const {classes} = this.props;
     return(
@@ -83,10 +117,19 @@ class App extends React.Component {
             {/* { customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
                       name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
             } */}
-            { this.state.customers ? this.state.customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
-                      name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); }) : ""
-            }
             
+            {/* 통신은 비동기적으로 이루어지기 때문에 데이터를 받아오지 못하는 경우도 생길수 있다. 
+            따라서, 데이터를 받아오지 못한 경우도 고려한다. 
+            이를 progress bar로 구현 */}
+            { this.state.customers ? this.state.customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
+                      name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
+              :
+              <TableRow>
+                <TableCell colSpan='6' align='center'>
+                  <CircularProgress className={classes.progress} variant='determinate' value={this.state.completed} />
+                </TableCell>
+              </TableRow>
+            }            
           </TableBody>
         </Table>
       </Paper>
