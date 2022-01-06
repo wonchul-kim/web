@@ -15,12 +15,24 @@ class CustomersAdd extends Component {
         }
     }
 
+    // 정보를 모두 작성하고, submit를 해서 이 내용이 DB에 저장된다고 해서 front에 새로운 내용이 반영되지는 않는다. 
+    // 이를 위해서 다시 서버로부터 데이터를 받아서 표시하도록 해야한다. 
+    // 이는 react의 특성으로, 페이지의 변화된 부분만 새로고침이 되기 때문이다. 
     handleFormSubmit = (e) => {
         e.preventDefault()
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
             })
+        this.state = { // 모든 정보에 대한 초기화
+            file: null, // profile image로서 byte 형태의 데이터 
+            userName: '',
+            birthday: '',
+            gender: '',
+            job: '',
+            fileName: '' // 보내고자 하는 file(여기서는 profile image)의 이미지 이름
+        }
+        window.location.reload();
     }
 
     handleFileChange = (e) => {
@@ -40,24 +52,19 @@ class CustomersAdd extends Component {
     addCustomer = () => { // 작성한 form의 정보들을 server로 보내주는 함수 
         const url = '/api/customers';
         const formData = new FormData();
-        formData('image', this.state.file);
-        formData('name', this.state.userName);
-        formData('birthday', this.state.birthday);
-        formData('gender', this.state.gender);
-        formData('job', this.state.job);
+        formData.append('image', this.state.file);
+        formData.append('name', this.state.userName);
+        formData.append('birthday', this.state.birthday);
+        formData.append('gender', this.state.gender);
+        formData.append('job', this.state.job);
 
         // file이 포함되어 있는 데이터를 전송하고자 할 때에는 map 표준에 맞는 header를 추가해주어야 한다. 
-
         const config = {
             header: {
                 'content-type': 'multipart/form-data'
             }
-
         }
-
         return post(url, formData, config);
-
-         
     }
 
     render(){

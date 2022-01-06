@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 // })
 
 // to get data from mysql database
-const login_info = fs.readFileSync('./database.json');
+const login_info = fs.readFileSync('./db.json');
 const conf = JSON.parse(login_info);
 const mysql = require('mysql');
 
@@ -56,16 +56,42 @@ const connection = mysql.createConnection({
 connection.connect();
 
 
+const multer = require('multer');
+// file처리를 위한 저장 공간을 설정
+const upload = multer({dest: './upload'}); 
+
+
+// client로부터 추가된 정보에 file이 포함되어 있고, 이 file을 처리하기 위해서는 multer라는 라이브러리가 필요 
 app.get('/api/customers', (req, res) =>  { // 해당 경로에 접속하여서 다음의 명령들을 수행하겠다. 
     // connection.connect();
     connection.query(
         "SELECT * FROM customers", 
         (err, rows, fields) => {
-            console.log(err)
-            console.log(rows)
+            console.log(err);
+            console.log(rows);
             res.send(rows);
         }
     );
+});
+
+// 유저가 직접적으로 접속하기 위해서 upload 폴더를 공유하는데 이 공유 폴더의 이름은 image
+app.use('/image', express.static('./upload'));
+app.post('/api/customers', upload.single('image'), (req, res) => {
+    let sql = 'INSERT INTO customers VALUES (null, ? ,?, ?, ?, ?)';
+    let image = '/image/' + req.file.filename;
+    let name = req.body.name;
+    let birthday = req.body.birthday;
+    let gender = req.body.gender;
+    let job = req.body.job;
+    let params = [image, name, birthday, gender, job];
+    
+     connection.query(sql, params, 
+        (err, rows, fields) => {
+            console.log(err);
+            console.log(rows);
+            res.send(rows);
+        }
+    ); 
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
