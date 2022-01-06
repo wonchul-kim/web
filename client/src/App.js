@@ -9,6 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import { withStyles, makeStyles } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
+import CusotmersAdd from './components/CustomersAdd';
 
 
 const styles = theme => ({
@@ -101,36 +102,39 @@ class App extends React.Component {
   render(){
     const {classes} = this.props;
     return(
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableCell> ID </TableCell>
-            <TableCell> profile </TableCell>
-            <TableCell> Name </TableCell>
-            <TableCell> birthday </TableCell>
-            <TableCell> gender </TableCell>
-            <TableCell> job </TableCell>
-          </TableHead>
-          <TableBody>
-            {/* { customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
-                      name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
-            } */}
-            
-            {/* 통신은 비동기적으로 이루어지기 때문에 데이터를 받아오지 못하는 경우도 생길수 있다. 
-            따라서, 데이터를 받아오지 못한 경우도 고려한다. 
-            이를 progress bar로 구현 */}
-            { this.state.customers ? this.state.customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
-                      name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
-              :
-              <TableRow>
-                <TableCell colSpan='6' align='center'>
-                  <CircularProgress className={classes.progress} variant='determinate' value={this.state.completed} />
-                </TableCell>
-              </TableRow>
-            }            
-          </TableBody>
-        </Table>
-      </Paper>
+      <div>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableCell> ID </TableCell>
+              <TableCell> profile </TableCell>
+              <TableCell> Name </TableCell>
+              <TableCell> birthday </TableCell>
+              <TableCell> gender </TableCell>
+              <TableCell> job </TableCell>
+            </TableHead>
+            <TableBody>
+              {/* { customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
+                        name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
+              } */}
+              
+              {/* 통신은 비동기적으로 이루어지기 때문에 데이터를 받아오지 못하는 경우도 생길수 있다. 
+              따라서, 데이터를 받아오지 못한 경우도 고려한다. 
+              이를 progress bar로 구현 */}
+              { this.state.customers ? this.state.customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
+                        name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
+                :
+                <TableRow>
+                  <TableCell colSpan='6' align='center'>
+                    <CircularProgress className={classes.progress} variant='determinate' value={this.state.completed} />
+                  </TableCell>
+                </TableRow>
+              }            
+            </TableBody>
+          </Table>
+        </Paper>
+        <CusotmersAdd />
+        </div>
     );
   }
 }

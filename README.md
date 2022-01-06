@@ -38,7 +38,7 @@ component가 mounting 해제될 때 수행되는 함수는 `componentWillUnmount
 ## React
 [Getting started](https://create-react-app.dev/docs/getting-started/)
 
-### To make a react project
+### To make a react project as a client
 ```
 npx create-react-app [project name]
 ```
@@ -63,15 +63,15 @@ npx create-react-app [project name]
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
-# Server
+## Server
 
-## setting
+### setting
 
 ``` 
 npm install nodemon body-parser express
 ```
 
-## Create MYSQM DB
+### Create MYSQM DB
 * install 
     ```
     sudo apt-get install mysql-server
@@ -85,6 +85,10 @@ npm install nodemon body-parser express
     ``` 
     sudo mysql -u root -p
     ```
+* see database in DB
+    ```
+    show databases;
+    ```
 
 * create database
     ```
@@ -92,6 +96,9 @@ npm install nodemon body-parser express
     ```
 
 * create table in database
+
+    Before creating table, need to select specific database.
+
     ```
     use [database name];
 
@@ -103,6 +110,14 @@ npm install nodemon body-parser express
         gender VARCHAR(64), 
         job VARCHAR(64) );
     ```
+
+    데이터에 한글까지 포함하고 싶다면:
+    ```
+    CREATE TABLE customers (
+        ...
+    ) DEFAULT CHARACTER SET UTF8 COLLATE utf8_general_ci;
+    ```
+
 
 * insert and show data
     ```
@@ -133,9 +148,23 @@ npm install nodemon body-parser express
     npm install mysql
     ```
 
+### AXIOS
 
-#### jsonlint
-`json` 형태로 작성한 데이터가 올바른 `json`인지 확인
+client에서 새로운 데이터(고객정보)를 DB에 저장하기 위해서 server와의 통신을 위한 라이브러리
+
+```
+npm install --save axios
+```
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+## Etc.
+
+* jsonlint
+
+    `json` 형태로 작성한 데이터가 올바른 `json`인지 확인
 
 
 
