@@ -132,6 +132,7 @@ class App extends React.Component {
               <TableCell> birthday </TableCell>
               <TableCell> gender </TableCell>
               <TableCell> job </TableCell>
+              <TableCell> 설정 </TableCell>
             </TableHead>
             <TableBody>
               {/* { customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
@@ -141,7 +142,8 @@ class App extends React.Component {
               {/* 통신은 비동기적으로 이루어지기 때문에 데이터를 받아오지 못하는 경우도 생길수 있다. 
               따라서, 데이터를 받아오지 못한 경우도 고려한다. 
               이를 progress bar로 구현 */}
-              { this.state.customers ? this.state.customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
+              { this.state.customers ? this.state.customers.map(c => { 
+                        return( <Customers stateRefresh={this.stateRefresh} key = {c.id} id = {c.id} image = {c.image}
                         name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
                 :
                 <TableRow>

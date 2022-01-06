@@ -65,7 +65,7 @@ const upload = multer({dest: './upload'});
 app.get('/api/customers', (req, res) =>  { // 해당 경로에 접속하여서 다음의 명령들을 수행하겠다. 
     // connection.connect();
     connection.query(
-        "SELECT * FROM customers", 
+        "SELECT * FROM customers WHERE isDeleted = 0", 
         (err, rows, fields) => {
             console.log(err);
             console.log(rows);
@@ -77,7 +77,7 @@ app.get('/api/customers', (req, res) =>  { // 해당 경로에 접속하여서 �
 // 유저가 직접적으로 접속하기 위해서 upload 폴더를 공유하는데 이 공유 폴더의 이름은 image
 app.use('/image', express.static('./upload'));
 app.post('/api/customers', upload.single('image'), (req, res) => {
-    let sql = 'INSERT INTO customers VALUES (null, ? ,?, ?, ?, ?)';
+    let sql = 'INSERT INTO customers VALUES (null, ? ,?, ?, ?, ?, now(), 0)';
     let image = '/image/' + req.file.filename;
     let name = req.body.name;
     let birthday = req.body.birthday;
@@ -93,6 +93,15 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
         }
     ); 
 });
+
+app.delete('/api/customers/:id', (req, res) => {
+    let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id = ?';
+    let params = [req.params.id];
+    connection.query(sql, params, 
+        (err, rows, fields) => {
+            res.send(rows);
+        })
+})
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 

@@ -132,6 +132,20 @@ npm install nodemon body-parser express
     SELECT * FROM [database name]
     ```
 
+* create new tab in the table 
+
+    ```
+    ALTER TABLE customers ADD createdDate DATETIME;
+    ALTER TABLE customers ADD isDeleted INT;
+    ```
+
+    중간에 만들었기 때문에 `NULL`이 들어 있는데, 이를 그냥 `now()`로 바꾸자
+    ```
+    UPDATE customers SET createdDate = NOW();
+    UPDATE customers SET isDeleted = 0;
+    ```  
+    
+
 * `root`계정으로 하지 말고, 새로운 계정을 만들어서 진행하자. (아래의 내용은 `root`로 접속하여 진행)
     ```
     create user '계정명'@'%' identified by '비밀번호';
