@@ -75,9 +75,29 @@ props or state에 의해 값이 변경되면 => shouldComponentUpdate()
 
 class App extends React.Component {
 
-  state = {
-    customers: "",
-    completed: 0
+  // state = {
+  //   customers: "",
+  //   completed: 0
+  // }
+
+  constructor(props){
+    super(props);
+    this.state = {
+      customers: '', 
+      completed: 0
+    }
+  }
+
+  stateRefresh = () => { // 고객 정보에 변경이 있으면 고객정보만 새로고침하기 위해서! 전체 페이지가 아니라!
+    this.setState({
+      customers: '',
+      completed: 0
+    });
+
+    this.callApi()
+    .then(res => this.setState({customers: res})) // callApi로부터 받아온 데이터(body)를 res라는 변수로 받아오고, 이를 res에 저장하여     
+                                                  // setState를 활용하여 customer 변수에 저장
+    .catch(err => console.log(err));
   }
 
   componentDidMount(){ // Api에서 통신을 할 경우에는 componentDidMount()에서 한다. 
@@ -85,7 +105,7 @@ class App extends React.Component {
     this.callApi()
       .then(res => this.setState({customers: res})) // callApi로부터 받아온 데이터(body)를 res라는 변수로 받아오고, 이를 res에 저장하여     
                                                     // setState를 활용하여 customer 변수에 저장
-      .then(err => console.log(err));
+      .catch(err => console.log(err));
   }
 
   callApi = async() => {
@@ -133,7 +153,7 @@ class App extends React.Component {
             </TableBody>
           </Table>
         </Paper>
-        <CusotmersAdd />
+        <CusotmersAdd stateRefresh={this.stateRefresh} />
         </div>
     );
   }

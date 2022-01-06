@@ -23,6 +23,7 @@ class CustomersAdd extends Component {
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
+                this.props.stateRefresh();
             })
         this.state = { // 모든 정보에 대한 초기화
             file: null, // profile image로서 byte 형태의 데이터 
@@ -32,7 +33,10 @@ class CustomersAdd extends Component {
             job: '',
             fileName: '' // 보내고자 하는 file(여기서는 profile image)의 이미지 이름
         }
-        window.location.reload();
+        // window.location.reload(); // 시험적으로 해당 window를 그냥 새로고침
+        // // 이는 필요한 부분만 새로고침하도록 고치자!!
+        
+
     }
 
     handleFileChange = (e) => {
