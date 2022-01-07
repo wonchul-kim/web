@@ -200,7 +200,7 @@ class App extends React.Component {
       }); 
 
       return data.map((c) => {
-        return <Customers stateRefresh={this.stateRefresh} key={c.id} image = {c.image} name = {c.name} 
+        return <Customers stateRefresh={this.stateRefresh} key={c.id} id={c.id} image = {c.image} name = {c.name} 
             birthday = {c.birthday} gender = {c.gender} job = {c.job} /> 
       });
     }
