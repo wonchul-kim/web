@@ -55,13 +55,11 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-
+// client로부터 추가된 정보에 file이 포함되어 있고, 이 file을 처리하기 위해서는 multer라는 라이브러리가 필요 
 const multer = require('multer');
 // file처리를 위한 저장 공간을 설정
 const upload = multer({dest: './upload'}); 
 
-
-// client로부터 추가된 정보에 file이 포함되어 있고, 이 file을 처리하기 위해서는 multer라는 라이브러리가 필요 
 app.get('/api/customers', (req, res) =>  { // 해당 경로에 접속하여서 다음의 명령들을 수행하겠다. 
     // connection.connect();
     connection.query(
@@ -95,7 +93,7 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
 });
 
 app.delete('/api/customers/:id', (req, res) => {
-    let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id = ?';
+    let sql = 'UPDATE customers SET isDeleted = 1 WHERE id = ?';
     let params = [req.params.id];
     connection.query(sql, params, 
         (err, rows, fields) => {
