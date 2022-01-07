@@ -33,8 +33,62 @@ const styles = theme => ({
   },
   progress: {
     margin: 3, //theme.spacing.unit*2,
+  },
+  tableHead: {
+    fontSize: "1.0rem"
+  },
+  menu: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginRight: 30,
+    display: 'flex',
+    justifyContent: 'right' 
   }
 });
+
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
 
 // const customers = [{
 //   'id': 1,
@@ -131,18 +185,60 @@ class App extends React.Component {
   }
   render(){
     const {classes} = this.props;
+    const cellList = ['번호', '프로필', '성명', '생년월일', '성별', '직업', '설정']
     return(
       <div>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              >
+                Customer Management Sys.
+              </Typography>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search customers"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
+            </Toolbar>
+          </AppBar>
+            <div className={classes.menu}>
+              <CusotmersAdd stateRefresh={this.stateRefresh} />
+            </div>
+        </Box>
+
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
-              <TableCell> ID </TableCell>
+              <TableRow>
+                {cellList.map(c => {
+                  return <TableCell className={classes.tableHead}>{c}</TableCell>
+                })}
+              </TableRow>
+              {/* <TableCell> ID </TableCell>
               <TableCell> profile </TableCell>
               <TableCell> Name </TableCell>
               <TableCell> birthday </TableCell>
               <TableCell> gender </TableCell>
               <TableCell> job </TableCell>
-              <TableCell> 설정 </TableCell>
+              <TableCell> 설정 </TableCell> */}
             </TableHead>
             <TableBody>
               {/* { customers.map(c => { return( <Customers key = {c.id} id = {c.id} image = {c.image}
@@ -165,7 +261,6 @@ class App extends React.Component {
             </TableBody>
           </Table>
         </Paper>
-        <CusotmersAdd stateRefresh={this.stateRefresh} />
       </div>
     );
   }
