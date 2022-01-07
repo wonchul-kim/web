@@ -148,14 +148,16 @@ class App extends React.Component {
     super(props);
     this.state = {
       customers: '', 
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     }
   }
 
   stateRefresh = () => { // 고객 정보에 변경이 있으면 고객정보만 새로고침하기 위해서! 전체 페이지가 아니라!
     this.setState({
       customers: '',
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     });
 
     this.callApi()
@@ -183,8 +185,25 @@ class App extends React.Component {
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + 1});
   }
-  render(){
+
+  handleVlueChange = (e) => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
+
+  render(){ 
     const {classes} = this.props;
+    const filteredComponents = (data) =>{
+      data = data.filter((c) => {
+        return c.name.indexOf(this.state.searchKeyword) > -1;
+      }); 
+
+      return data.map((c) => {
+        return <Customers stateRefresh={this.stateRefresh} key={c.id} image = {c.image} name = {c.name} 
+            birthday = {c.birthday} gender = {c.gender} job = {c.job} /> 
+      });
+    }
     const cellList = ['번호', '프로필', '성명', '생년월일', '성별', '직업', '설정']
     return(
       <div>
@@ -215,6 +234,13 @@ class App extends React.Component {
                 <StyledInputBase
                   placeholder="Search customers"
                   inputProps={{ 'aria-label': 'search' }}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  name="searchKeyword"
+                  value={this.state.searchKeyword}
+                  onChange={this.handleVlueChange}
                 />
               </Search>
             </Toolbar>
@@ -248,9 +274,11 @@ class App extends React.Component {
               {/* 통신은 비동기적으로 이루어지기 때문에 데이터를 받아오지 못하는 경우도 생길수 있다. 
               따라서, 데이터를 받아오지 못한 경우도 고려한다. 
               이를 progress bar로 구현 */}
-              { this.state.customers ? this.state.customers.map(c => { 
-                        return( <Customers stateRefresh={this.stateRefresh} key = {c.id} id = {c.id} image = {c.image}
-                        name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
+              { this.state.customers ? 
+                      // this.state.customers.map(c => { 
+                      //   return( <Customers stateRefresh={this.stateRefresh} key = {c.id} id = {c.id} image = {c.image}
+                      //   name = {c.name} birthday = {c.birthday} gender = {c.gender} job = {c.job} /> ); })
+                      filteredComponents(this.state.customers)
                 :
                 <TableRow>
                   <TableCell colSpan='6' align='center'>
